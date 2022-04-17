@@ -1,13 +1,14 @@
 # Still in the testing phase
 
-$nonrm_apps = Get-AppxPackage * | Where-Object $_.NonRemovable -Eq 'True'} 
-$usefulapps = '.*Photos.*|.*zuneVideo.*|.*Calculator*.|.*Store.*'
+$usefulapps = '.*Photos.*|.*zuneVideo.*|.*Calculator.*|.*Net.Native.*|.*Edge.*'
 
-$junkapps = Get-AppxPackage * | Where-Object{$_.Name -notmatch $usefulapps -and $_.Name -notmatch $nonrm_apps}
+$junkapps = Get-AppxPackage * | Where-Object{$_.NonRemovable -notmatch 'True' -and $_.Name -notmatch $usefulapps}
+
+$junkapps | FT Name,NonRemovable
 
 if ($junkapps)
 {
 
-$junkapps | Remove-AppxPackage >> ~/output.txt
+$junkapps | Remove-AppxPackage 
 
 }
